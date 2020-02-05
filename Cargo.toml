@@ -1,0 +1,11 @@
+[package]
+name = "ghatest"
+version = "0.1.0"
+authors = ["dlysai"]
+edition = "2018"
+
+[profile.release]
+debug = true
+
+[dependencies]
+sdl2 = { version = "0.33", features = ["bundled", "static-link", "unsafe_textures"] }
