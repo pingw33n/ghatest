@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT }}
       - name: Get date
         id: date
         run: echo ::set-output name=value::$(date '+%Y-%m-%d')
@@ -22,13 +24,15 @@ jobs:
       - name: Create snapshot tag
         if: steps.needs_snapshot.outputs.value == 'yes'
         run: |
+          git fetch --tags
           git config --global user.email "bot@example.com"
           git config --global user.name "Bot"
           git tag -m "[nightly] ${{ steps.date.outputs.value }}" -a snapshot-${{ steps.date.outputs.value }}
+          git push origin --tags
 
-      - name: Push snapshot tag
-        if: steps.needs_snapshot.outputs.value == 'yes'
-        uses: ad-m/github-push-action@v0.5.0
-        with:
-          tags: true
-          github_token: ${{ secrets.PAT }}
+#      - name: Push snapshot tag
+#        if: steps.needs_snapshot.outputs.value == 'yes'
+#        uses: ad-m/github-push-action@v0.5.0
+#        with:
+#          tags: true
+#          github_token: ${{ secrets.PAT }}
