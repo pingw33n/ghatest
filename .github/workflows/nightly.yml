@@ -16,8 +16,13 @@ jobs:
       - name: Check if need new snapshot
         id: needs_snapshot
         run:
-          git describe --exact-match --match 'snapshot-*' && git describe --match 'snapshot-*'
-          echo ::set-output name=value::$?
+          v=$(if [ git describe --exact-match --match 'snapshot-*' && git describe --match 'snapshot-*' ]
+          then
+            echo 0
+          else
+            echo 1
+          fi)
+          echo ::set-output name=value::$v
 
       - name: Create snapshot tag
         if: steps.needs_snapshot.outputs.value != 0
