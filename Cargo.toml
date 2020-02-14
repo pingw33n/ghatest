@@ -8,4 +8,4 @@ edition = "2018"
 debug = true
 
 [dependencies]
-sdl2 = { version = "0.33", features = ["bundled", "static-link", "unsafe_textures"] }
+sdl2 = { version = "0.33", features = ["bundled", "static-link"] }
