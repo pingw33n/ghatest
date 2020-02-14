@@ -27,6 +27,8 @@ jobs:
       - name: Create snapshot tag
         if: steps.needs_snapshot.outputs.value != 0
         run: |
+          git config --global user.email "bot@example.com"
+          git config --global user.name "Bot"
           git tag -m "[nightly] ${{ steps.date.outputs.value }}" -a snapshot-${{ steps.date.outputs.value }}
 
       - name: Push snapshot tag
