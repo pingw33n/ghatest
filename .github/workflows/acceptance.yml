@@ -45,6 +45,27 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Cache cargo registry
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo/registry
+        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+    - name: Cache cargo index
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo/git
+        key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+    - name: Cache target/release/build
+      uses: actions/cache@v1
+      with:
+        path: target/release/build
+        key: ${{ runner.os }}-target-build-${{ hashFiles('**/Cargo.lock') }}
+    - name: Cache target/release/deps
+      uses: actions/cache@v1
+      with:
+        path: target/release/deps
+        key: ${{ runner.os }}-target-deps-${{ hashFiles('**/Cargo.lock') }}
+
     - name: Install Rust
       uses: actions-rs/toolchain@v1
       with:
