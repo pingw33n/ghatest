@@ -1,0 +1,31 @@
+name: Nightly
+
+on: repository_dispatch
+#  schedule:
+#    cron: '0 0 * * *'
+
+jobs:
+  push_tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get date
+        id: date
+        run: echo ::set-output name=value::$(date '+%Y-%m-%d')
+
+      - name: Check if need new snapshot
+        id: needs_snapshot
+        run:
+          git describe --exact-match --match 'snapshot-*' && git describe --match 'snapshot-*'
+          echo ::set-output name=value::$?
+
+      - name: Create snapshot tag
+        if: steps.needs_snapshot.outputs.value != 0
+        run: |
+          git tag -m "[nightly] ${{ steps.date.outputs.value }}" -a snapshot-${{ steps.date.outputs.value }}
+
+      - name: Push snapshot tag
+        if: steps.needs_snapshot.outputs.value != 0
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
