@@ -80,7 +80,7 @@ jobs:
 
     - name: cargo clippy
       shell: bash
-      run: cargo clippy --all-targets --all-features --verbose -- -D warnings
+      run: cargo clippy --all-targets --all-features --release --verbose -- -D warnings
 
     - name: cargo test
       shell: bash
