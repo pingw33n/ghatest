@@ -16,7 +16,7 @@ jobs:
       - name: Check if need new snapshot
         id: needs_snapshot
         run:
-          v=$(if [ git describe --exact-match --match 'snapshot-*' && git describe --match 'snapshot-*' ]
+          v=$(if git describe --exact-match --match 'snapshot-*' && git describe --match 'snapshot-*'
           then
             echo 0
           else
