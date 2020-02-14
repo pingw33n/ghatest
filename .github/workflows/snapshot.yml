@@ -2,7 +2,6 @@ name: Snapshot
 
 on:
   push:
-    branches: master
     tags: snapshot-*
 env:
   NAME: ghatest
