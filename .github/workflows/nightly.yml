@@ -12,18 +12,18 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
 
-#      - name: Fetch tags
-#        run: git fetch --tags
-
-      - name: Get date
-        id: date
-        run: echo ::set-output name=value::$(date '+%Y-%m-%d')
+      - name: Fetch tags
+        run: git fetch --tags
 
       - name: Check if need new snapshot
         id: needs_snapshot
         run: |
           if git describe --exact-match --match 'snapshot-*'; then v=no; else v=yes; fi
           echo ::set-output name=value::$v
+
+      - name: Get date
+        id: date
+        run: echo ::set-output name=value::$(date '+%Y-%m-%d')
 
       - name: Create snapshot tag
         if: steps.needs_snapshot.outputs.value == 'yes'
