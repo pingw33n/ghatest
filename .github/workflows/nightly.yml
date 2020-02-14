@@ -25,14 +25,14 @@ jobs:
           echo ::set-output name=value::$v
 
       - name: Create snapshot tag
-        if: steps.needs_snapshot.outputs.value == "yes"
+        if: steps.needs_snapshot.outputs.value == 'yes'
         run: |
           git config --global user.email "bot@example.com"
           git config --global user.name "Bot"
           git tag -m "[nightly] ${{ steps.date.outputs.value }}" -a snapshot-${{ steps.date.outputs.value }}
 
       - name: Push snapshot tag
-        if: steps.needs_snapshot.outputs.value == "yes"
+        if: steps.needs_snapshot.outputs.value == 'yes'
         uses: ad-m/github-push-action@v0.5.0
         with:
           github_token: ${{ secrets.PAT }}
