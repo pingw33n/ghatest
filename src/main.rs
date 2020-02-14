@@ -1,4 +1,8 @@
 fn main() {
     println!("Hello, world!");
-    panic!("check my backtrace");
+    if let Some(i) = std::env::args().nth(1) {
+        if &i == "panic" {
+            panic!("check my backtrace");
+        }
+    }
 }
