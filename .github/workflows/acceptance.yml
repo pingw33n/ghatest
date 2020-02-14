@@ -90,6 +90,10 @@ jobs:
       shell: bash
       run: cargo build --release --verbose
 
+    - name: Check repo clean
+      shell: bash
+      run: git diff --exit-code
+
     - name: App version
       shell: bash
       run: target/release/${NAME} -v
