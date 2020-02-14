@@ -1,4 +1,4 @@
-name: Acceptance
+name: Build
 
 on:
   push:
@@ -49,7 +49,7 @@ jobs:
       shell: bash
       run: |
         echo ::set-output name=cargo_lock::${{ hashFiles('Cargo.lock') }}
-        echo ::set-output name=workflow_yml::${{ hashFiles('.github/workflows/acceptance.yml') }}
+        echo ::set-output name=workflow_yml::${{ hashFiles('.github/workflows/build.yml') }}
 
     - name: Cache target/release/build
       uses: actions/cache@v1
