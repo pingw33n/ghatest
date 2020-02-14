@@ -24,6 +24,8 @@ jobs:
           fi)
           echo ::set-output name=value::$v
 
+      - run: echo ${{ steps.needs_snapshot.outputs.value }}
+
       - name: Create snapshot tag
         if: steps.needs_snapshot.outputs.value == 'yes'
         run: |
