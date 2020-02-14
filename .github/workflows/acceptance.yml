@@ -44,16 +44,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Calc hashes
+      id: hash
+      shell: bash
+      run: |
+        echo ::set-output name=cargo_lock::${{ hashFiles('Cargo.lock') }}
+        echo ::set-output name=workflow_yml::${{ hashFiles('.github/workflows/acceptance.yml') }}
+
     - name: Cache target/release/build
       uses: actions/cache@v1
       with:
         path: target/release/build
-        key: ${{ runner.os }}-target-build-${{ hashFiles('**/Cargo.lock') }}
+        key: ${{ runner.os }}-target-build-${{ steps.hash.outputs.cargo_lock }}-${{ steps.hash.outputs.workflow_yml }}
     - name: Cache target/release/deps
       uses: actions/cache@v1
       with:
         path: target/release/deps
-        key: ${{ runner.os }}-target-deps-${{ hashFiles('**/Cargo.lock') }}
+        key: ${{ runner.os }}-target-deps-${{ steps.hash.outputs.cargo_lock }}-${{ steps.hash.outputs.workflow_yml }}
 
     - name: Install Rust
       uses: actions-rs/toolchain@v1
