@@ -78,11 +78,11 @@ jobs:
         key: ${{ runner.os }}-target-deps-${{ hashFiles('**/Cargo.lock') }}
 
     - name: Install Rust
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: ${{ env.RUST_VERSION }}
-        target: ${{ matrix.target }}
-        override: true
+      run: |
+        rustup toolchain install ${RUST_VERSION}-${{ matrix.target }}
+        rustup default ${RUST_VERSION}-${{ matrix.target }}
+        rustc -vV
+        cargo -vV
 
     - name: Setup vcvars (Windows)
       if: runner.os == 'Windows'
