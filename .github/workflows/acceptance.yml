@@ -48,14 +48,8 @@ jobs:
     - name: Remove existing cached dir
       shell: bash
       run: |
-        rm -rf ~/.cargo/bin
         rm -rf ~/.cargo/git
         rm -rf ~/.cargo/registry
-    - name: Cache ~/.cargo/bin
-      uses: actions/cache@v1
-      with:
-        path: ~/.cargo/bin
-        key: ${{ runner.os }}-cargo-bin-${{ hashFiles('**/Cargo.lock') }}
     - name: Cache ~/.cargo/git
       uses: actions/cache@v1
       with:
@@ -78,11 +72,11 @@ jobs:
         key: ${{ runner.os }}-target-deps-${{ hashFiles('**/Cargo.lock') }}
 
     - name: Install Rust
-      run: |
-        rustup toolchain install ${RUST_VERSION}-${{ matrix.target }}
-        rustup default ${RUST_VERSION}-${{ matrix.target }}
-        rustc -vV
-        cargo -vV
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: ${{ env.RUST_VERSION }}
+        target: ${{ matrix.target }}
+        override: true
 
     - name: Setup vcvars (Windows)
       if: runner.os == 'Windows'
