@@ -2,7 +2,7 @@ name: Nightly
 
 on:
   schedule:
-    cron: '* * * * *'
+    - cron: '* * * * *'
 
 jobs:
   push_tag:
