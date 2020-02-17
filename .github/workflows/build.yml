@@ -16,7 +16,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-16.04, macos-10.15, windows-2019]
-        arch: [x86_64]
+        arch: [x86]
+        exclude:
+          - os: macos-10.15
+            arch: x86
         include:
           - os: ubuntu-16.04
             os_kind: linux
@@ -29,6 +32,10 @@ jobs:
             vcvars_cmd: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
 
           - os: ubuntu-16.04
+            arch: x86
+            target: i686-unknown-linux-gnu
+
+          - os: ubuntu-16.04
             arch: x86_64
             target: x86_64-unknown-linux-gnu
 
@@ -37,12 +44,39 @@ jobs:
             target: x86_64-apple-darwin
 
           - os: windows-2019
+            arch: x86
+            target: i686-pc-windows-msvc
+            vc_arch: x86
+
+          - os: windows-2019
             arch: x86_64
             target: x86_64-pc-windows-msvc
             vc_arch: x86_amd64
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
+
+    - name: Install 32-bit compatibility libs (Linux x86)
+      if: runner.os == 'Linux' && matrix.arch == 'x86'
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install gcc-multilib g++-multilib -y
+
+    - name: Install deps (Linux x86_64)
+      if: runner.os == 'Linux' && matrix.arch == 'x86_64'
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install libsndio-dev -y
+
+    - name: Install deps (Linux x86)
+      if: runner.os == 'Linux' && matrix.arch == 'x86'
+      shell: bash
+      run: |
+        sudo dpkg --add-architecture i386
+        sudo apt-get update
+        sudo apt-get install libsndio-dev:i386 -y
 
     - name: Calc hashes
       id: hash
