@@ -62,6 +62,13 @@ jobs:
         path: target/release/deps
         key: ${{ runner.os }}-target-deps-${{ steps.hash.outputs.cargo_lock }}-${{ steps.hash.outputs.workflow_yml }}
 
+    - name: Install deps (Linux)
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install libsndio-dev -y
+
     - name: Install Rust
       shell: bash
       run: |
