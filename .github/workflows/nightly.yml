@@ -1,8 +1,8 @@
 name: Nightly
 
-on: repository_dispatch
-#  schedule:
-#    cron: '0 0 * * *'
+on:
+  schedule:
+    cron: '* * * * *'
 
 jobs:
   push_tag:
@@ -32,10 +32,3 @@ jobs:
           git config --global user.name "Bot"
           git tag -m "[nightly] ${{ steps.date.outputs.value }}" -a snapshot-${{ steps.date.outputs.value }}
           git push origin --tags
-
-#      - name: Push snapshot tag
-#        if: steps.needs_snapshot.outputs.value == 'yes'
-#        uses: ad-m/github-push-action@v0.5.0
-#        with:
-#          tags: true
-#          github_token: ${{ secrets.PAT }}
