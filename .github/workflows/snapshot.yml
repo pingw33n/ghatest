@@ -191,7 +191,7 @@ jobs:
     - run: ls -l *.zip
 
     - name: Release
-      uses: softprops/action-gh-release@v0.1.5
+      uses: softprops/action-gh-release@v0.1.14
       with:
         body:
         files: '*.zip'
